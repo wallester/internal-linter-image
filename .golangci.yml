@@ -1,0 +1,19 @@
+run:
+  deadline: 5m
+
+  tests: true
+
+linters-settings:
+  custom:
+    mocklint:
+      path: ../custom-code-analysis-tools/mockplugin.so
+      description: "Checks for usage of mock.Anything in unit tests"
+
+linters:
+  disable-all: true
+  enable:
+    - mocklint
+
+issues:
+  max-same-issues: 0
+  max-issues-per-linter: 0
