@@ -1,59 +1,77 @@
-# Custom Plugin Development for golangci-lint
+# Custom Code Analysis Tools
 
-This instruction outlines how to develop and integrate custom plugins into `golangci-lint`, enhancing its functionality to suit specific linting needs.
+## Overview
 
+`custom-gcl` is a custom version of `golangci-lint` that includes custom linters.
 ## Creating the Plugin
 
 ### Develope the Plugin
 
-1. Provide one or more `golang.org/x/tools/go/analysis.Analyzer` structs.
-2. Ensure your project utilizes a `go.mod` file for managing dependencies.
-3. All overlapping library versions between your plugin and `golangci-lint` must match those used in `golangci-lint`. Check these versions by running `go version -m golangci-lint`.
-4. Create a Go file, such as `plugin/example.go`, with the following specifications:
+1. Create a Go file with the linter logic. For example, `analyzer.go`:
+```go
+package custom-code-analysis-tools
 
-    ```go
-   func New(conf any) ([]*analysis.Analyzer, error) { 
-            // ...
-   }
-    ```
+import (
+    "golang.org/x/tools/go/analysis"
+)
 
-### Generate the plugin
+var ExampleAnalyzer = &analysis.Analyzer{
+        Name: "example",
+        Doc:  "this is an example analyzer",
+        Run:  run,
+}
 
-1. From the root directory of your plugin project, compile the plugin using the command:
+func run(pass *analysis.Pass) (interface{}, error) {
+    for _, file := range pass.Files {
+        // Implement your analysis logic here
+        pass.Reportf(file.Pos(), "example warning")
+    }
+    return nil, nil
+}
 
-    ```bash
-    go build -buildmode=plugin plugin/example.go
-    ```
+func New(conf any) ([]*analysis.Analyzer, error) {
+    return []*analysis.Analyzer{ExampleAnalyzer}, nil
+}
+```
+2. Ensure your project utilizes a go.mod file for managing dependencies.
 
-3. **Copy the generated `example.so` file** to a directory within your project or to another location that is easily accessible.
+### Generate the custom golagnci-lint binary
 
-## Setting Up a Custom `golangci-lint`
+1. Define your building configuration into `.custom-gcl.yml`.
+```yaml
+version: v1.57.0
+plugins:
+  # a plugin from a Go proxy
+  - module: 'github.com/golangci/plugin1'
+    import: 'github.com/golangci/plugin1/foo'
+    version: v1.0.0
 
-**Note:** Custom plugins require a version of `golangci-lint` that supports plugin integration.
+  # a plugin from local source
+  - module: 'github.com/golangci/plugin2'
+    path: /my/local/path/plugin2
+```
+2. From the root directory of your plugin project, run the command `golangci-lint custom` (or `golangci-lint custom -v` to have logs):
 
-### Plugin and golangci-lint Dependencies
+```bash
+golangci-lint custom -v
+```
 
-Ensure that all dependencies used in the plugin match the versions used by `golangci-lint` to avoid conflicts. This includes direct and transitive dependencies.
+### Configuring Your Project for custom `golangci-lint`
 
-### Configuring Your Project for Linting
-
-To configure `golangci-lint` to use your custom plugin, perform the following steps:
+To configure `golangci-lint` to use your custom linters, perform the following steps:
 
 1. **Add or update the `.golangci.yml` file** in the root directory of the project you want to lint:
 
-    ```yaml
-    linters-settings:
-      custom:
-        example:
-          path: /path/to/mocklint.so
-          description: "The description of the linter"
-          original-url: "github.com/golangci/example-linter"
-          settings: # Optional settings for the linter.
-            one: "Foo"
-            two:
-              - name: "Bar"
-            three:
-              name: "Bar"
-    ```
-
-Custom linters are enabled by default but follow the same rules as standard linters. To disable all linters, including custom ones, use the `disable-all: true` option in `.golangci.yml` or the `-D` flag on the command line. They can be re-enabled in the `.golangci.yml` file or by using the `-E` flag (e.g., `golangci-lint run -Eexample`)
+```yaml
+linters-settings:
+  custom:
+    your_linter_name:
+      type: "module"
+      description: This is an example usage of a plugin linter.
+      settings:
+        message: hello
+linters:
+  disable-all: true
+  enable:
+      - your_linter_name
+```
