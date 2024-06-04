@@ -1,0 +1,5 @@
+version: v1.59.0
+plugins:
+  - module: 'github.com/wallester/custom-code-analysis-tools'
+    import: 'github.com/wallester/custom-code-analysis-tools/analyzer'
+    version: v1.0.0
