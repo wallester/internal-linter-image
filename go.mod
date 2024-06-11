@@ -1,4 +1,4 @@
-module github.com/wallester/custom-code-analysis-tools
+module github.com/wallester/custom-golang-image
 
 go 1.22.3
 

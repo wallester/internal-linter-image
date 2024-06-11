@@ -1,4 +1,4 @@
-package custom_code_analysis_tools
+package analyzer
 
 import (
 	"go/ast"
