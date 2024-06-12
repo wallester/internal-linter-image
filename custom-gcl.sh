@@ -1,24 +1,45 @@
 #!/bin/bash
 
-# Create or overwrite the .custom-gcl.yml file with the specified content
+parse_args() {
+  BINDIR=${BINDIR:-./bin}
+  while getopts "b:dh?x" arg; do
+    case "$arg" in
+      b) BINDIR="$OPTARG" ;;
+      d) log_set_priority 10 ;;
+      h | \?) usage "$0" ;;
+      x) set -x ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+  TAG=$1
+}
+
+parse_args "$@"
+
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59.0
+
+if [ $? -ne 0 ]; then
+  echo "Failed to install golangci-lint."
+  exit 1
+fi
+
 cat <<EOF > .custom-gcl.yml
 version: v1.59.0
 plugins:
-  - module: 'github.com/wallester/custom-golang-image'
-    import: 'github.com/wallester/custom-golang-image/analyzer'
-    version: v1.0.1
+  - module: 'github.com/wallester/internal-linter-image'
+    import: 'github.com/wallester/internal-linter-image/analyzer'
+    version: v1.0.3
 EOF
 
-# Run golangci-lint in custom mode with verbose output
 golangci-lint custom -v
 
-# Check if golangci-lint was successful
 if [ $? -eq 0 ]; then
-  # Move custom-gcl file to the specified directory
-  mv custom-gcl $GOPATH/bin
+  mv custom-gcl $BINDIR
 
-  # Remove the .custom-gcl.yml file
   rm .custom-gcl.yml
+
+  echo "Operation completed successfully."
 else
   echo "golangci-lint encountered an error."
+
 fi
