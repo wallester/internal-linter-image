@@ -1,4 +1,5 @@
 version: v1.59.0
 plugins:
-  - module: 'github.com/wallester/custom-code-analysis-tools/analyzer.go'
-    version: v1.0.0
+  - module: 'github.com/wallester/internal-linter-image'
+    import: 'github.com/wallester/internal-linter-image/analyzer'
+    version: v1.0.1

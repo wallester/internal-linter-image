@@ -1,11 +1,11 @@
-# Custom Code Analysis Tools
+# Internal linter image
 
 ## Overview
 
 `custom-gcl` is a custom version of `golangci-lint` that includes custom linters.
-## Creating the Plugin
+## Creating the Analyzer
 
-### Develope the Plugin
+### Develope the main logic
 
 1. Create a Go file with the linter logic. For example, `analyzer.go`:
 ```go

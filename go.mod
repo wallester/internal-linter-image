@@ -1,4 +1,4 @@
-module github.com/wallester/custom-golang-image
+module github.com/wallester/internal-linter-image
 
 go 1.22.3
 
