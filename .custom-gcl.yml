@@ -1,5 +1,5 @@
 version: v1.59.0
 plugins:
-  - module: 'github.com/wallester/internal-linter-image'
-    import: 'github.com/wallester/internal-linter-image/analyzer'
+  - module: 'github.com/wallester/custom-golang-image'
+    import: 'github.com/wallester/custom-golang-image/analyzer'
     version: v1.0.1
