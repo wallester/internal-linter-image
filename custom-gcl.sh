@@ -1,13 +1,23 @@
 #!/bin/bash
 
+usage() {
+  echo "Usage: $0 [-b <bindir>] [-d] [-h] [-x]"
+  echo "  -b <bindir>   Specify the directory where custom-gcl will be moved (default: ./bin)"
+  echo "  -d            Enable debug logging"
+  echo "  -h            Display this help and exit"
+  echo "  -x            Set shell script debugging mode"
+  exit 1
+}
+
 parse_args() {
-  BINDIR=${BINDIR:-./bin}
-  while getopts "b:dh?x" arg; do
+  BINDIR="./bin"
+  while getopts ":b:dhx" arg; do
     case "$arg" in
       b) BINDIR="$OPTARG" ;;
-      d) log_set_priority 10 ;;
-      h | \?) usage "$0" ;;
+      d) set -x ;;
+      h) usage ;;
       x) set -x ;;
+      *) usage ;;
     esac
   done
   shift $((OPTIND - 1))
@@ -16,11 +26,8 @@ parse_args() {
 
 parse_args "$@"
 
-go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59.0
-
-if [ $? -ne 0 ]; then
-  echo "Failed to install golangci-lint."
-  exit 1
+if ! command -v golangci-lint >/dev/null 2>&1; then
+  curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.59.0;
 fi
 
 cat <<EOF > .custom-gcl.yml
@@ -31,15 +38,10 @@ plugins:
     version: v1.0.3
 EOF
 
-golangci-lint custom -v
-
-if [ $? -eq 0 ]; then
-  mv custom-gcl $BINDIR
-
+if golangci-lint custom -v; then
+  mv custom-gcl "$BINDIR" && echo "Operation completed successfully."
   rm .custom-gcl.yml
-
-  echo "Operation completed successfully."
 else
   echo "golangci-lint encountered an error."
-
+  rm .custom-gcl.yml
 fi
