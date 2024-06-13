@@ -1,4 +1,4 @@
-FROM golang:1.21.4
+FROM golang:1.22.3
 
 RUN apt-get update && \
     apt-get -y --no-install-recommends install postgresql-client libxrender1 libjpeg62 libfontconfig
