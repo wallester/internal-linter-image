@@ -27,11 +27,11 @@ parse_args() {
 parse_args "$@"
 
 if ! command -v golangci-lint >/dev/null 2>&1; then
-  curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.59.0;
+  curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.61.0;
 fi
 
 cat <<EOF > .custom-gcl.yml
-version: v1.59.0
+version: v1.61.0
 plugins:
   - module: 'github.com/wallester/internal-linter-image'
     import: 'github.com/wallester/internal-linter-image/analyzer'
