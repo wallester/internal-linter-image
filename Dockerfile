@@ -1,5 +1,7 @@
 FROM golang:1.23.1
 
+RUN touch /etc/apt/sources.list.d/trixie.list && \
+    printf "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
 RUN apt-get update && \
     apt-get -y --no-install-recommends install postgresql-client libxrender1 libjpeg62 libfontconfig
 
