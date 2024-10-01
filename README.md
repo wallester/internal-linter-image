@@ -3,6 +3,12 @@
 ## Overview
 
 `custom-gcl` is a custom version of `golangci-lint` that includes custom linters.
+## Build new Golang image
+1. Change versions in this repo code (Dockerfile, go.mod)
+2. Create PR and merge changes to master
+3. AWS Codebuild will automatically detect changes, build new image and upload to `271332529381.dkr.ecr.eu-west-1.amazonaws.com/golang-with-dependencies:latest`
+4. Monorepo services will automatically catch new version during its next build
+
 ## Creating the Analyzer
 
 ### Develope the main logic
