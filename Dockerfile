@@ -6,12 +6,12 @@ RUN touch /etc/apt/sources.list.d/trixie.list && \
     printf "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
 
 RUN apt-get update && \
-    apt-get -y --no-install-recommends install postgresql-client libxrender1 libjpeg62 libfontconfig zlib1g=1:1.3.dfsg+really1.3.1-1 wget=1.24.5-2+b1
+    apt-get --only-upgrade install zlib1g=1:1.3.dfsg+really1.3.1-1
 
-RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
-RUN apt-get -y --no-install-recommends install -f ./wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
-RUN wkhtmltopdf --version
-RUN whereis wkhtmltopdf
+#RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
+#RUN apt-get -y --no-install-recommends install -f ./wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
+#RUN wkhtmltopdf --version
+#RUN whereis wkhtmltopdf
 
 ENV GOPATH=/go
 ENV GOPROXY=direct
