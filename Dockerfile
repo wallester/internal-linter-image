@@ -1,9 +1,8 @@
 FROM golang:1.23.1
 
-RUN touch /etc/apt/sources.list.d/trixie.list && \
-    printf "deb https://deb.debian.org/debian trixie main" > /etc/apt/sources.list.d/trixie.list
-RUN apt-get update && \
-    apt-get -y --no-install-recommends install postgresql-client libxrender1 libjpeg62 libfontconfig
+RUN cat /etc/apt/sources.list
+#RUN apt-get update && \
+#    apt-get -y --no-install-recommends install postgresql-client libxrender1 libjpeg62 libfontconfig
 
 RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
 RUN apt-get -y --no-install-recommends install -f ./wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
