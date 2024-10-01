@@ -1,6 +1,6 @@
 module github.com/wallester/internal-linter-image
 
-go 1.21.4
+go 1.23.1
 
 require (
 	github.com/golangci/plugin-module-register v0.1.1
