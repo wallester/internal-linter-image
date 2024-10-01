@@ -1,12 +1,12 @@
 FROM golang:1.23.1
 
-RUN apt-get update && \
-    apt-get -y --no-install-recommends install postgresql-client libxrender1 libjpeg62 libfontconfig
+# RUN apt-get update && \
+#     apt-get -y --no-install-recommends install postgresql-client libxrender1 libjpeg62 libfontconfig
 
-RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
-RUN apt-get -y --no-install-recommends install -f ./wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
-RUN wkhtmltopdf --version
-RUN whereis wkhtmltopdf
+# RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
+# RUN apt-get -y --no-install-recommends install -f ./wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
+# RUN wkhtmltopdf --version
+# RUN whereis wkhtmltopdf
 
 ENV GOPATH=/go
 ENV GOPROXY=direct
