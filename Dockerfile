@@ -8,10 +8,10 @@ RUN apt-get -y --no-install-recommends install -f ./wkhtmltox_0.12.6.1-3.bookwor
 RUN wkhtmltopdf --version
 RUN whereis wkhtmltopdf
 
-ENV GOPATH /go
-ENV GOPROXY direct
-ENV GOSUMDB sum.golang.org
-ENV GONOSUMDB github.com/go-swagger/go-swagger
+ENV GOPATH=/go
+ENV GOPROXY=direct
+ENV GOSUMDB=sum.golang.org
+ENV GONOSUMDB=github.com/go-swagger/go-swagger
 
 # Prerequisites
 RUN curl -sSL https://raw.githubusercontent.com/wallester/internal-linter-image/master/custom-gcl.sh | bash -s -- -b $(go env GOPATH)/bin
