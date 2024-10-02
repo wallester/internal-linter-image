@@ -1,4 +1,4 @@
-version: v1.59.0
+version: v1.61.0
 plugins:
   - module: 'github.com/wallester/internal-linter-image'
     import: 'github.com/wallester/internal-linter-image/analyzer'
