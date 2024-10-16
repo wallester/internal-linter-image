@@ -19,5 +19,4 @@ RUN curl -sfL https://raw.githubusercontent.com/securego/gosec/master/install.sh
 RUN go install github.com/tebeka/go2xunit@latest
 RUN go install github.com/go-swagger/go-swagger/cmd/swagger@v0.31.0
 RUN go install github.com/wallester/godotenv/cmd/godotenv@latest
-RUN go install github.com/wallester/migrate@master
 RUN go install github.com/zricethezav/gitleaks/v8@v8.18.3
